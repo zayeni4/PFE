@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "landing_page",
+			"path": "."
+		},
+		{
+			"name": "landing",
+			"path": "../../landing"
+		}
+	],
+	"settings": {}
+}
