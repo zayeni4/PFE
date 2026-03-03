@@ -18,7 +18,6 @@ function drawCaptcha(canvas, code) {
     ctx.fillStyle = "#f3f4f6";
     ctx.fillRect(0, 0, width, height);
 
-    // Bruit de fond (points)
     for (let i = 0; i < 80; i++) {
         ctx.beginPath();
         ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 2, 0, Math.PI * 2);
@@ -26,7 +25,6 @@ function drawCaptcha(canvas, code) {
         ctx.fill();
     }
 
-    // Lignes de perturbation
     for (let i = 0; i < 5; i++) {
         ctx.beginPath();
         ctx.moveTo(Math.random() * width, Math.random() * height);
@@ -36,7 +34,6 @@ function drawCaptcha(canvas, code) {
         ctx.stroke();
     }
 
-    // Dessin des caractères
     const charWidth = width / (code.length + 1);
     code.split("").forEach((char, i) => {
         ctx.save();
@@ -87,8 +84,7 @@ export default function SignInPage() {
             refreshCaptcha();
         } else {
             setError("");
-            alert("Connexion réussie !");
-            navigate("/");
+            navigate("/dashboard"); // ✅ redirige vers le dashboard
         }
     };
 
@@ -96,7 +92,7 @@ export default function SignInPage() {
         <div className="flex flex-col lg:flex-row w-full min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
             {/* Formulaire de gauche */}
             <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     className="w-full max-w-md"
@@ -203,6 +199,7 @@ export default function SignInPage() {
                                 >
                                     Se connecter
                                 </button>
+                                {/* ✅ Suppression de la balise <link> invalide */}
                             </div>
                         </form>
 

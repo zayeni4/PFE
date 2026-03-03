@@ -8,6 +8,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import Footer from './components/Footer';
 import MapSection from './components/MapSection';
 import HeroSection from './components/HeroSection';
+import Dashboard from './pages/Dashbord'; // ✅ import correct
 import logo from './assets/images/logo.png';
 
 const Home = () => (
@@ -187,7 +188,6 @@ export default function App() {
     <ThemeProvider>
       <Router>
         <div className="min-h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300">
-          {/* ThemeToggle supprimé ici — le bouton est déjà dans NavBar */}
           <NavBar />
           <main className="flex-grow">
             <Routes>
@@ -195,9 +195,10 @@ export default function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<SignInPage />} />
+              <Route path="/dashboard" element={<Dashboard />} /> {/* ✅ route dashboard ajoutée */}
             </Routes>
           </main>
-          <Footer />
+          <Footer /> {/* ✅ suppression du </Dashbord> invalide */}
         </div>
       </Router>
     </ThemeProvider>

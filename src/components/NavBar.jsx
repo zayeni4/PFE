@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Menu, X, Sun, Moon, Search, Home, ChevronRight, Linkedin, Youtube, Mail } from 'lucide-react';
+import { Menu, X, Sun, Moon, Search, Home, ChevronRight, Linkedin, Youtube, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 
@@ -85,6 +85,7 @@ const navItems = [
   { label: 'PROJETS', href: '/projects' },
   { label: 'PARTENARIAT', href: '/partnerships' },
   { label: "APPELS D'OFFRE ET CONSULTATIONS", href: '/tenders' },
+  { label: "ABOUT US", href: '/about' },
 ];
 
 const MegaMenu = ({ content, isOpen }) => (
@@ -155,8 +156,7 @@ export const NavBar = () => {
               <Mail className="w-4 h-4" />
             </a>
           </div>
-
-          {/* Search + Theme Toggle (une seule lune ici) */}
+          
           <div className="flex items-center gap-3">
             <div className="relative w-72">
               <input 
@@ -167,7 +167,6 @@ export const NavBar = () => {
               <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-600" />
             </div>
 
-            {/* Bouton thème — uniquement ici */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400"
@@ -208,7 +207,7 @@ export const NavBar = () => {
             </ul>
           </div>
 
-          {/* Right Side Actions — sans bouton thème */}
+          {/* Right Side Actions */}
           <div className="flex items-center gap-4">
             <Link
               to="/login"
@@ -254,7 +253,7 @@ export const NavBar = () => {
                 className="text-center bg-blue-900 text-white py-3 rounded text-xs font-bold uppercase"
                 onClick={() => setMenuOpen(false)}
               >
-                ESPACE EXTRANET
+                ESPACE ENTREPRISE
               </Link>
             </motion.div>
           )}
