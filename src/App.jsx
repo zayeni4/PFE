@@ -1,15 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import NavBar from './components/NavBar';
 import SignInPage from './pages/SignInPage';
 import Contact from './pages/Contact';
 import About from './pages/About';
-import { ThemeProvider } from './context/ThemeContext';
 import Footer from './components/Footer';
 import MapSection from './components/MapSection';
-import HeroSection from './components/HeroSection';
-import Dashboard from './pages/Dashbord'; // ✅ import correct
-import logo from './assets/images/logo.png';
+import HeroSection from './components/HeroSection'; 
+import StudentDashboard from './pages/StudentDashboard';
+import TeacherDashboard from './pages/TeacherDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import ScheduleManagement from './pages/ScheduleManagement';
+import ScheduleDetail from './pages/ScheduleDetail';
+import { ThemeProvider } from './context/ThemeContext';
+
+// Placeholder for missing logo.png to avoid build errors
+const logo = "https://images.unsplash.com/photo-1592288337612-ca072f93b1bb?auto=format&fit=crop&q=80&w=200";
 
 const Home = () => (
   <div className="min-h-screen">
@@ -147,8 +153,6 @@ const Home = () => (
     </div>
     
     <MapSection />
-
-    {/* Quick Links Section */}
     <div className="py-20 bg-blue-900 text-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -183,23 +187,61 @@ const Placeholder = ({ title }) => (
   </div>
 );
 
+const DashboardRedirect = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    if (role === "Etudiant") {
+      navigate("/student-dashboard");
+    } else if (role === "Enseignant") {
+      navigate("/teacher-dashboard");
+    } else if (role === "Administration") {
+      navigate("/admin-dashboard");
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
+  return null;
+};
+
+const AppContent = () => {
+  const location = useLocation();
+  const isProfilePage = location.pathname.startsWith('/dashboard') || 
+                        location.pathname.startsWith('/profile') ||
+                        location.pathname.endsWith('-dashboard') ||
+                        location.pathname.startsWith('/admin/schedules');
+  const isLoginPage = location.pathname === '/login';
+  const shouldHideNav = isProfilePage || isLoginPage;
+
+  return (
+    <div className="min-h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300">
+      {!shouldHideNav && <NavBar />}
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Placeholder title="Our Services" />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<SignInPage />} />
+          <Route path="/dashboard" element={<DashboardRedirect />} /> 
+          <Route path="/profile" element={<DashboardRedirect />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
+          <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/schedules" element={<ScheduleManagement />} />
+          <Route path="/admin/schedules/:id" element={<ScheduleDetail />} />
+        </Routes>
+      </main>
+      {!shouldHideNav && <Footer />}
+    </div>
+  );
+};
+
 export default function App() {
   return (
     <ThemeProvider>
       <Router>
-        <div className="min-h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300">
-          <NavBar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<SignInPage />} />
-              <Route path="/dashboard" element={<Dashboard />} /> {/* ✅ route dashboard ajoutée */}
-            </Routes>
-          </main>
-          <Footer /> {/* ✅ suppression du </Dashbord> invalide */}
-        </div>
+        <AppContent />
       </Router>
     </ThemeProvider>
   );

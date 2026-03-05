@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Shield, ArrowLeft, RotateCw } from "lucide-react";
+import { Shield, ArrowLeft, RotateCw, Sun, Moon } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTheme } from "../context/ThemeContext";
 
 function generateCaptcha() {
     const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
@@ -55,6 +56,7 @@ export default function SignInPage() {
     const [password, setPassword] = useState("");
     const canvasRef = useRef(null);
     const navigate = useNavigate();
+    const { darkMode, toggleDarkMode } = useTheme();
 
     const refreshCaptcha = () => {
         const newCode = generateCaptcha();
@@ -84,12 +86,34 @@ export default function SignInPage() {
             refreshCaptcha();
         } else {
             setError("");
-            navigate("/dashboard"); // ✅ redirige vers le dashboard
+            // Save the login name and role to localStorage
+            localStorage.setItem("userName", login);
+            localStorage.setItem("userRole", role);
+            
+            // Redirect based on role
+            if (role === "Etudiant") {
+                navigate("/student-dashboard");
+            } else if (role === "Enseignant") {
+                navigate("/teacher-dashboard");
+            } else {
+                navigate("/admin-dashboard");
+            }
         }
     };
 
     return (
-        <div className="flex flex-col lg:flex-row w-full min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
+        <div className="flex flex-col lg:flex-row w-full min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300 relative">
+            {/* Theme Toggle for Login Page */}
+            <div className="absolute top-6 right-6 z-10">
+                <button
+                    onClick={toggleDarkMode}
+                    className="p-3 rounded-full bg-white dark:bg-neutral-900 shadow-lg border border-gray-100 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:scale-110 transition-transform"
+                    aria-label="Toggle theme"
+                >
+                    {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+                </button>
+            </div>
+
             {/* Formulaire de gauche */}
             <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
                 <motion.div
@@ -199,11 +223,9 @@ export default function SignInPage() {
                                 >
                                     Se connecter
                                 </button>
-                                {/* ✅ Suppression de la balise <link> invalide */}
+                
                             </div>
                         </form>
-
-                        {/* Liens d'inscription */}
                         <div className="mt-8 flex flex-col items-center gap-4">
                             <div className="flex justify-center items-center">
                                 <p className="font-medium text-sm text-gray-500 dark:text-neutral-400">Vous n'avez pas de compte ?</p>
