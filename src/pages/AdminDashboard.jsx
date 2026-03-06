@@ -16,7 +16,7 @@ import {
   ShieldCheck,
   FileText,
   BarChart3,
-  FileQuestion 
+  ListTodo
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -84,9 +84,13 @@ export default function AdminDashboard() {
               label="Emplois du temps" 
               onClick={() => navigate('/admin/schedules')}
             />
+            <SidebarItem 
+              icon={<ListTodo size={18} />} 
+              label="Questionnaires" 
+              onClick={() => navigate('/admin/questionnaires')}
+            />
             <SidebarItem icon={<FileText size={18} />} label="Examens" />
             <SidebarItem icon={<BarChart3 size={18} />} label="Statistiques" />
-            <SidebarItem icon={<FileQuestion size={18} />} label="Questionnaires" />
           </SidebarSection>
 
           <SidebarSection title="SYSTÈME">

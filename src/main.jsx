@@ -1,11 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { ThemeProvider } from "./context/ThemeContext";
-import ThemeToggle from "./components/ThemeToggle";
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <ThemeProvider>
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+
+// Polyfill for process in the browser
+if (typeof window !== 'undefined' && !window.process) {
+  window.process = { env: {} };
+}
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
     <App />
-  </ThemeProvider>
+  </StrictMode>,
 );

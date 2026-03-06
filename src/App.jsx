@@ -6,12 +6,14 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import Footer from './components/Footer';
 import MapSection from './components/MapSection';
-import HeroSection from './components/HeroSection'; 
+import HeroSection from './components/HeroSection';
 import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import ScheduleManagement from './pages/ScheduleManagement';
 import ScheduleDetail from './pages/ScheduleDetail';
+import QuestionnaireManagement from './pages/QuestionnaireManagement';
+import QuestionnaireView from './pages/QuestionnaireView';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Placeholder for missing logo.png to avoid build errors
@@ -160,11 +162,18 @@ const Home = () => (
             { icon: "📚", label: "Bibliothèque" },
             { icon: "📧", label: "Webmail" },
             { icon: "🖥️", label: "E-Learning" },
-            { icon: "📅", label: "Emploi du temps" }
+            { icon: "📅", label: "Emploi du temps", path: "/admin/schedules" },
+            { icon: "📝", label: "Questionnaire", path: "/admin/questionnaires" }
           ].map((link, i) => (
             <motion.a 
               key={i}
-              href="#"
+              href={link.path || "#"}
+              onClick={(e) => {
+                if (link.path) {
+                  e.preventDefault();
+                  navigate(link.path);
+                }
+              }}
               whileHover={{ scale: 1.05 }}
               className="flex flex-col items-center gap-3 p-6 rounded-2xl hover:bg-white/10 transition-colors"
             >
@@ -230,6 +239,8 @@ const AppContent = () => {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/admin/schedules" element={<ScheduleManagement />} />
           <Route path="/admin/schedules/:id" element={<ScheduleDetail />} />
+          <Route path="/admin/questionnaires" element={<QuestionnaireManagement />} />
+          <Route path="/questionnaire/:id" element={<QuestionnaireView />} />
         </Routes>
       </main>
       {!shouldHideNav && <Footer />}

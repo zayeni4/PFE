@@ -13,7 +13,8 @@ import {
   Search, 
   Plus,
   Calendar,
-  ClipboardList
+  ClipboardList,
+  ListTodo
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -77,6 +78,11 @@ export default function TeacherDashboard() {
 
           <SidebarSection title="ÉVALUATION">
             <SidebarItem icon={<FileCheck size={18} />} label="Saisie des Notes" />
+            <SidebarItem 
+              icon={<ListTodo size={18} />} 
+              label="Questionnaires" 
+              onClick={() => navigate('/admin/questionnaires')}
+            />
             <SidebarItem icon={<ClipboardList size={18} />} label="Absences" />
           </SidebarSection>
 
