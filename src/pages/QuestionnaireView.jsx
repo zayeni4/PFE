@@ -76,6 +76,8 @@ export default function QuestionnaireView() {
 
     // Save response
     const saved = localStorage.getItem('questionnaires');
+    const studentName = localStorage.getItem('userName') || 'Étudiant Anonyme';
+    
     if (saved) {
       const all = JSON.parse(saved);
       const updated = all.map(q => {
@@ -83,7 +85,8 @@ export default function QuestionnaireView() {
           const newResponse = {
             id: Date.now().toString(),
             submittedAt: new Date().toISOString(),
-            answers: answers
+            answers: answers,
+            student: studentName
           };
           return {
             ...q,
