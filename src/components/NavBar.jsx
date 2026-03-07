@@ -95,18 +95,24 @@ const MegaMenu = ({ content, isOpen }) => (
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 10 }}
-        className="absolute left-0 w-full bg-white shadow-2xl border-t border-neutral-100 z-50 mt-0"
+        className="fixed left-0 w-full bg-white dark:bg-neutral-900 shadow-2xl border-t border-neutral-100 dark:border-neutral-800 z-50"
+        style={{ top: '104px' }}
       >
         <div className="container mx-auto px-6 py-10 grid grid-cols-12 gap-8">
           {/* Featured Section */}
-          <div className="col-span-3 border-r border-neutral-100 pr-8">
+          <div className="col-span-3 border-r border-neutral-100 dark:border-neutral-800 pr-8">
             <div className="relative rounded-xl overflow-hidden group cursor-pointer">
-              <img src={content.featured.image} alt={content.featured.title} className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+              <img
+                src={content.featured.image}
+                alt={content.featured.title}
+                className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                referrerPolicy="no-referrer"
+              />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4 text-center">
                 <h3 className="text-white font-bold text-xl leading-tight">{content.featured.title}</h3>
               </div>
             </div>
-            <button className="mt-4 text-xs font-bold bg-neutral-900 text-white px-4 py-2 rounded uppercase hover:bg-violet-600 transition-colors">
+            <button className="mt-4 text-xs font-bold bg-neutral-900 dark:bg-blue-600 text-white px-4 py-2 rounded uppercase hover:bg-violet-600 dark:hover:bg-blue-700 transition-colors">
               Lire la suite
             </button>
           </div>
@@ -114,13 +120,13 @@ const MegaMenu = ({ content, isOpen }) => (
           {/* Columns */}
           <div className="col-span-9 grid grid-cols-3 gap-8">
             {content.columns.map((col, idx) => (
-              <div key={idx} className={idx !== 0 ? "border-l border-neutral-100 pl-8" : ""}>
-                <h4 className="text-blue-900 font-black text-sm uppercase mb-6 tracking-wider">{col.title}</h4>
+              <div key={idx} className={idx !== 0 ? "border-l border-neutral-100 dark:border-neutral-800 pl-8" : ""}>
+                <h4 className="text-blue-900 dark:text-blue-400 font-black text-sm uppercase mb-6 tracking-wider">{col.title}</h4>
                 <ul className="space-y-4">
                   {col.links.map((link, lIdx) => (
                     <li key={lIdx} className="flex items-start gap-2 group cursor-pointer">
-                      <ChevronRight className="w-4 h-4 text-blue-900 mt-0.5 group-hover:translate-x-1 transition-transform" />
-                      <span className="text-neutral-600 text-xs font-bold uppercase hover:text-blue-600 transition-colors">
+                      <ChevronRight className="w-4 h-4 text-blue-900 dark:text-blue-400 mt-0.5 group-hover:translate-x-1 transition-transform" />
+                      <span className="text-neutral-600 dark:text-neutral-400 text-xs font-bold uppercase hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                         {link}
                       </span>
                     </li>
@@ -141,9 +147,10 @@ export const NavBar = () => {
   const { darkMode, toggleDarkMode } = useTheme();
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-neutral-200 transition-colors duration-300">
-      {/* Top Bar with Search */}
-      <div className="bg-neutral-50 border-b border-neutral-100">
+    <nav className="sticky top-0 z-50 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 transition-colors duration-300">
+      
+      {/* Top Bar avec recherche et réseaux sociaux */}
+      <div className="bg-neutral-50 dark:bg-neutral-900 border-b border-neutral-100 dark:border-neutral-800">
         <div className="container mx-auto px-4 h-12 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <a href="#" className="text-blue-600 hover:text-blue-800 transition-colors">
@@ -162,9 +169,9 @@ export const NavBar = () => {
               <input 
                 type="text" 
                 placeholder="Rechercher ..." 
-                className="w-full bg-[#f2f2f2] border-none rounded-none py-2.5 px-4 pr-12 text-sm focus:outline-none focus:ring-0 text-neutral-600 placeholder-neutral-400"
+                className="w-full bg-[#f2f2f2] dark:bg-neutral-800 border-none rounded-none py-2.5 px-4 pr-12 text-sm focus:outline-none focus:ring-0 text-neutral-600 dark:text-neutral-300 placeholder-neutral-400 dark:placeholder-neutral-500"
               />
-              <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-600" />
+              <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-600 dark:text-neutral-400" />
             </div>
             <button
               onClick={toggleDarkMode}
@@ -179,43 +186,38 @@ export const NavBar = () => {
 
       <div className="container px-4 mx-auto relative">
         <div className="flex justify-between items-center h-14">
-          {/* Home Icon & Main Nav */}
+
+          {/* Logo + Navigation principale */}
           <div className="flex items-center">
-            <Link to="/" className="text-[#00a6eb] hover:scale-110 transition-transform px-4 border-l border-neutral-100 h-14 flex items-center">
+            <Link to="/" className="text-[#00a6eb] hover:scale-110 transition-transform px-4 border-l border-neutral-100 dark:border-neutral-800 h-14 flex items-center">
               <Home className="w-5 h-5 fill-current" />
             </Link>
 
-            <ul className="hidden lg:flex items-center h-14">
+            <ul
+              className="hidden lg:flex items-center h-14"
+              onMouseLeave={() => setActiveMegaMenu(null)}
+            >
               {navItems.map((item, index) => (
                 <li 
                   key={index} 
-                  className="relative h-14 flex items-center border-l border-neutral-100 last:border-r"
-                  onMouseEnter={() => item.megaMenu && setActiveMegaMenu(index)}
-                  onMouseLeave={() => setActiveMegaMenu(null)}
+                  className="relative h-14 flex items-center border-l border-neutral-100 dark:border-neutral-800 last:border-r"
+                  onMouseEnter={() => item.megaMenu ? setActiveMegaMenu(index) : setActiveMegaMenu(null)}
                 >
                   <Link 
                     to={item.href} 
                     className={`px-4 text-[11px] font-bold uppercase tracking-tight transition-colors ${
-                      activeMegaMenu === index ? 'text-blue-600' : 'text-neutral-600 hover:text-blue-600'
+                      activeMegaMenu === index ? 'text-blue-600' : 'text-neutral-600 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400'
                     }`}
                   >
                     {item.label}
                   </Link>
-                  {item.megaMenu && <MegaMenu content={item.megaMenu} isOpen={activeMegaMenu === index} />}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Right Side Actions */}
+          {/* Actions à droite */}
           <div className="flex items-center gap-4">
-            <Link
-              to="/profile"
-              className="p-2 rounded-full hover:bg-neutral-100 transition-colors text-neutral-600"
-              title="Mon Profil"
-            >
-              <User className="w-5 h-5" />
-            </Link>
             <Link
               to="/login"
               className="hidden lg:block py-1.5 px-4 bg-blue-900 text-white rounded text-xs font-bold hover:bg-blue-800 transition-colors"
@@ -223,9 +225,9 @@ export const NavBar = () => {
               ESPACE ENTREPRISE
             </Link>
 
-            {/* Mobile Hamburger */}
+            {/* Bouton hamburger mobile */}
             <button
-              className="lg:hidden p-2 text-neutral-600"
+              className="lg:hidden p-2 text-neutral-600 dark:text-neutral-400"
               onClick={() => setMenuOpen((prev) => !prev)}
             >
               {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -233,21 +235,21 @@ export const NavBar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Menu mobile */}
         <AnimatePresence>
           {menuOpen && (
             <motion.div 
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden py-6 border-t border-neutral-100 flex flex-col gap-6"
+              className="lg:hidden overflow-hidden py-6 border-t border-neutral-100 dark:border-neutral-800 flex flex-col gap-6"
             >
               <ul className="flex flex-col space-y-4">
                 {navItems.map((item, index) => (
                   <li key={index}>
                     <Link
                       to={item.href}
-                      className="text-sm font-bold text-neutral-800 hover:text-blue-600 uppercase"
+                      className="text-sm font-bold text-neutral-800 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 uppercase"
                       onClick={() => setMenuOpen(false)}
                     >
                       {item.label}
@@ -266,6 +268,21 @@ export const NavBar = () => {
           )}
         </AnimatePresence>
       </div>
+
+      {/* 
+        MegaMenus rendus ICI, en dehors du <ul>
+        Comme ça ils ne sont plus piégés dans le <li> 
+        et s'affichent correctement sous toute la navbar
+      */}
+      {navItems.map((item, index) =>
+        item.megaMenu ? (
+          <MegaMenu
+            key={index}
+            content={item.megaMenu}
+            isOpen={activeMegaMenu === index}
+          />
+        ) : null
+      )}
     </nav>
   );
 };
